@@ -1,7 +1,7 @@
 {
   "name": "gpg-conf",
   "main": "./index.js",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "GPG configuration manager.",
   "repository": "https://github.com/isysd/gpg-conf",
   "author": "isysd <public@iramiller.com>",
