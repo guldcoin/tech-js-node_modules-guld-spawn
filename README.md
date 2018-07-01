@@ -1,4 +1,4 @@
-# gpg-conf
+# guld-spawn
 
-GPG configuration manager. Set gpg configuration values, including default key and gpg-agent cache.
+Promisified process spawner with stdin support and optional stderr redirect to stdout.
 
