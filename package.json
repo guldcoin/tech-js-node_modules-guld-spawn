@@ -1,9 +1,9 @@
 {
-  "name": "keyring-gpg",
-  "main": "./keyring.js",
-  "version": "0.1.0",
-  "description": "GPG2 implementation for the keyring-interface.",
-  "repository": "https://github.com/isysd/keyring-gpg",
+  "name": "gpg-conf",
+  "main": "./index.js",
+  "version": "0.2.0",
+  "description": "GPG configuration manager.",
+  "repository": "https://github.com/isysd/gpg-conf",
   "author": "isysd <public@iramiller.com>",
   "license": "MIT",
   "scripts": {
@@ -12,7 +12,9 @@
     "fix": "eslint --fix *.js*"
   },
   "dependencies": {
-    "rimraf": "^2.6.2"
+    "lodash.isequal": "^4.5.0",
+    "pify": "^3.0.0",
+    "user-home": "^2.0.0"
   },
   "devDependencies": {
     "chai": "^4.1.2",

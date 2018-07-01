@@ -1,3 +1,4 @@
-# keyring-gpg
+# gpg-conf
 
-GPG implementation of the keyring-interface. Basically just wrap the gpg2 keyring for now.
+GPG configuration manager. Set gpg configuration values, including default key and gpg-agent cache.
+

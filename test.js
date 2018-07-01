@@ -1,93 +1,40 @@
-/* global describe:false it:false before:false */
+/* global describe:false it:false */
 const assert = require('chai').assert
-const gpg = require('./keyring.js')
+const { expandConfig, flattenConfig } = require('./index.js')
 const pify = require('pify')
 const path = require('path')
-const nfs = require('fs')
-const fs = pify(nfs)
-const pubkey = nfs.readFileSync('fixtures/pubkey.asc', 'ascii').trim()
-const privkey = nfs.readFileSync('fixtures/privkey.asc', 'ascii').trim()
-const fpr = 'B92828C1D851FF85EA643D10BD00ACBCA6123BCB'
+const fs = pify(require('fs'))
+const _isEqual = require('lodash.isequal')
+process.env.GNUPGHOME = path.resolve('fixtures')
 
-describe('GPGKeyring', function () {
-  before(async () => {
-    await gpg.clear()
-    await fs.writeFile(path.join(process.env.GNUPGHOME, 'gpg-agent.conf'), 'default-cache-ttl 3600\n')
+describe('gpg-conf', function () {
+  it('expandConfig', async () => {
+    this.confile = await fs.readFile('./fixtures/gpg.conf', 'utf-8')
+    this.conf = expandConfig(this.confile.split('\n'))
+    assert.exists(this.conf)
+    assert.exists(this.conf['no-greeting'])
+    assert.exists(this.conf['no-auto-key-locate'])
+    assert.equal(this.conf['no-auto-key-locate'].comments, '# Don\'t leak information by automatically trying to get keys.\n')
+    assert.isTrue(_isEqual(['S9', 'S8', 'S7', 'S10', 'S4', 'S13', 'S12', 'S11'], this.conf['personal-cipher-preferences'].args))
   })
-  after(async () => {
-    await gpg.clear()
-    await gpg.lockKey(fpr)
+  it('flattenConfig', async () => {
+    var flat = flattenConfig(this.conf)
+    assert.exists(flat)
+    assert.equal(this.confile, flat)
   })
-  it('generate', async () => {
-    this.fpr = await gpg.generate({
-      passphrase: 'password',
-      numBits: 1024,
-      userIds: [{
-        name: 'testu',
-        email: 'testu@guld.io'
-      }]
-    })
-    assert.exists(this.fpr)
-    /*console.log(this.fpr)
-    pubkey = (await gpg.getPublicKey(this.fpr)).trim()
-    await fs.writeFile('fixtures/pubkey.asc')
-    privkey = (await gpg.getPrivateKey(this.fpr)).trim()
-    await fs.writeFile('fixtures/privkey.asc')*/
-  }).timeout(10000)
-  it('importPublicKey', async () => {
-    await gpg.importPublicKey(pubkey)
-    assert.isTrue(true)
-  })
-  it('getPublicKey', async () => {
-    this.pubkey = await gpg.getPublicKey(fpr)
-    assert.equal(this.pubkey.trim(), pubkey)
-  })
-  it('listKeys', async () => {
-    assert((await gpg.listKeys()).length === 2)
-  })
-  it('importPrivateKey', async () => {
-    await gpg.importPrivateKey(privkey, 'password')
-    this.privkey = await gpg.getPrivateKey(fpr, 'password')
-    assert.exists(this.privkey.match('-----BEGIN PGP PRIVATE KEY BLOCK-----'))
-  }).timeout(10000)
-  it('isLocked', async () => {
+  /* it('isLocked', async () => {
     var islocked = await gpg.isLocked(fpr)
     assert.isNotTrue(islocked)
   }).timeout(15000)
-  /*it('lock', async () => {
+  it('lock', async () => {
     await gpg.lockKey(fpr, 'password')
     var islocked = await gpg.isLocked(fpr)
     assert.isTrue(islocked)
-  })*/
+  })
   it('unlock', async () => {
     await gpg.unlockKey(fpr, 'password')
     var islocked = await gpg.isLocked(fpr)
     assert.exists(islocked)
     assert.isNotTrue(islocked)
-  }).timeout(15000)
-  it('sign', async () => {
-    this.sig = await gpg.sign('hello', fpr)
-    assert.exists(this.sig)
-    assert.equal(typeof this.sig, 'string')
-  }).timeout(3000)
-  it('verify bad signature', async () => {
-    var verified = await gpg.verify('hell', this.sig, fpr)
-    assert.exists(verified)
-    assert.isFalse(verified)
-  })
-  it('verify good signature', async () => {
-    var verified = await gpg.verify('hello', this.sig, fpr)
-    assert.exists(verified)
-    assert.isTrue(verified)
-  })
-  it('encrypt', async () => {
-    this.ciphertext = await gpg.encrypt('hello', fpr)
-    assert.exists(this.ciphertext)
-    assert.equal(typeof this.ciphertext, 'string')
-  }).timeout(3000)
-  it('decrypt', async () => {
-    var message = await gpg.decrypt(this.ciphertext, fpr)
-    assert.exists(message)
-    assert.equal(message, 'hello')
-  })
+  }).timeout(15000) */
 })
