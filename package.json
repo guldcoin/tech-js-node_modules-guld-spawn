@@ -28,5 +28,9 @@
   "readme": "README.md",
   "engines": {
     "node": ">=7"
-  }
+  },
+  "homepage": "https://github.com/isysd/tech-js-node_modules-guld-spawn#readme",
+  "keywords": [
+    "guld"
+  ]
 }
