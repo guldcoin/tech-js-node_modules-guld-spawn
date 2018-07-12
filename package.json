@@ -2,7 +2,7 @@
   "name": "guld-spawn",
   "main": "./index.js",
   "version": "1.0.8",
-  "description": "Promisified process spawner with stdin support and optional stderr redirect to stdout.",
+  "description": "Promisified process spawner for node or chrome native messenger.",
   "repository": "https://github.com/isysd/guld-spawn",
   "author": "isysd <public@iramiller.com>",
   "license": "MIT",
@@ -10,7 +10,9 @@
     "lint": "eslint --env browser *.js*",
     "fix": "eslint --fix *.js*"
   },
-  "dependencies": {},
+  "dependencies": {
+    "guld-env": "^1.0.14"
+  },
   "devDependencies": {
     "eslint": "^5.1.0",
     "eslint-config-standard": "^11.0.0",
