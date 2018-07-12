@@ -57,7 +57,6 @@ async function nodeSpawn (command, stdin, args = [], redirectErr = false) {
     })
     if (stdin && stdin.length > 0) {
       proc.stdin.write(stdin)
-      proc.stdin.end('\n')
     }
   })
 }
