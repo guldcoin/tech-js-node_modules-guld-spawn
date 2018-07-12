@@ -1,7 +1,7 @@
 {
   "name": "guld-spawn",
   "main": "./index.js",
-  "version": "1.0.9",
+  "version": "2.0.0",
   "description": "Promisified process spawner for node or chrome native messenger.",
   "repository": "https://github.com/isysd/guld-spawn",
   "author": "isysd <public@iramiller.com>",
