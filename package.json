@@ -1,7 +1,7 @@
 {
   "name": "guld-spawn",
   "main": "./index.js",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "Promisified process spawner with stdin support and optional stderr redirect to stdout.",
   "repository": "https://bitbucket.org/guld/tech-js-node_modules-guld-spawn",
   "author": "isysd <public@iramiller.com>",
