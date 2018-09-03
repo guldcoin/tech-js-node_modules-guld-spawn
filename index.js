@@ -1,11 +1,11 @@
 /* global chrome */
 const child_process = require('child_process') // eslint-disable-line camelcase
-const { getJS } = require('guld-env')
+const guldEnv = require('guld-env')
 var spawn
 
 function getSpawn () {
   if (spawn) return spawn
-  else if (getJS().startsWith('node')) spawn = nodeSpawn
+  else if (guldEnv.JS.startsWith('node')) spawn = nodeSpawn
   else if (typeof chrome !== 'undefined') spawn = chromeSpawn
   else throw new Error('No spawn available for this environment.')
   return spawn
