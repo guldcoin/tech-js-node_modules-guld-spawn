@@ -4,7 +4,9 @@
 
 [![node package manager](https://img.shields.io/npm/v/guld-spawn.svg)](https://www.npmjs.com/package/guld-spawn) [![travis-ci](https://travis-ci.org/guldcoin/tech-js-node_modules-guld-spawn.svg)](https://travis-ci.org/guldcoin/tech-js-node_modules-guld-spawn?branch=guld) [![lgtm](https://img.shields.io/lgtm/grade/javascript/b/guld/tech-js-node_modules-guld-spawn.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/b/guld/tech-js-node_modules-guld-spawn/context:javascript) [![david-dm](https://david-dm.org/guldcoin/tech-js-node_modules-guld-spawn/status.svg)](https://david-dm.org/guldcoin/tech-js-node_modules-guld-spawn) [![david-dm](https://david-dm.org/guldcoin/tech-js-node_modules-guld-spawn/dev-status.svg)](https://david-dm.org/guldcoin/tech-js-node_modules-guld-spawn?type=dev)
 
-Promisified process spawner with stdin support and optional stderr redirect to stdout.
+Promisified process spawner for node or chrome native messenger. Chrome native messenger must be installed and called from a paired chrome extension.
+
+With stdin support and optional stderr redirect to stdout.
 
 ### Install
 
@@ -14,6 +16,17 @@ Promisified process spawner with stdin support and optional stderr redirect to s
 npm i guld-spawn
 ```
 
+### Usage
+
+``` JS
+const {getSpawn, nodeSpawn, chromeSpawn} = require('guld-spawn')
+
+// either nodeSpawn or chromeSpawn depending on environment
+var spawn = getSpawn()
+
+// note: this is not an async function, for brevity
+var stdout = await spawn('ledger', '', ['.f', 'ledger.dat', 'bal'])
+```
 
 ### License
 

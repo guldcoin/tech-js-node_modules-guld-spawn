@@ -1,6 +1,37 @@
+/* global chrome */
 const child_process = require('child_process') // eslint-disable-line camelcase
+const guldEnv = require('guld-env')
+var spawn
 
-module.exports = async function spawn (command, stdin, args = [], redirectErr = false) {
+function getSpawn () {
+  if (spawn) return spawn
+  else if (guldEnv.JS.startsWith('node')) spawn = nodeSpawn
+  else if (typeof chrome !== 'undefined') spawn = chromeSpawn
+  else throw new Error('No spawn available for this environment.')
+  return spawn
+}
+
+async function chromeSpawn (command, stdin, args = []) {
+  return new Promise((resolve, reject) => {
+    chrome.runtime.sendNativeMessage(`com.guld.${command}`,
+      {'cmd': args.join(' '), 'stdin': stdin},
+      response => {
+        if (!response) {
+          reject(chrome.runtime.lastError)
+        } else {
+          response = JSON.parse(response)
+          if (response.error && response['error'].length !== 0) {
+            reject(response.error)
+          } else {
+            resolve([response['output']])
+          }
+        }
+      }
+    )
+  })
+}
+
+async function nodeSpawn (command, stdin, args = [], redirectErr = false) {
   return new Promise((resolve, reject) => {
     const proc = child_process.spawn(command, args) // eslint-disable-line camelcase
     const buffers = []
@@ -24,6 +55,14 @@ module.exports = async function spawn (command, stdin, args = [], redirectErr = 
       stdout = stdout.toString('utf-8')
       resolve(stdout)
     })
-    proc.stdin.end(stdin)
+    if (stdin && stdin.length > 0) {
+      proc.stdin.end(stdin)
+    }
   })
+}
+
+module.exports = {
+  nodeSpawn: nodeSpawn,
+  chromeSpawn: chromeSpawn,
+  getSpawn: getSpawn
 }
