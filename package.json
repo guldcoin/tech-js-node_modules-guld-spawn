@@ -1,7 +1,7 @@
 {
   "name": "guld-spawn",
   "main": "./index.js",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "description": "Promisified process spawner for node or chrome native messenger. Chrome native messenger must be installed and called from a paired chrome extension. With stdin support and optional stderr redirect to stdout.",
   "repository": "https://bitbucket.org/guld/tech-js-node_modules-guld-spawn",
   "author": "isysd <public@iramiller.com>",
